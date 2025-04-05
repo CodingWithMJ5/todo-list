@@ -38,12 +38,22 @@ const TodoList = () => {
     setTodos((prevTodos) => prevTodos.filter((todo) => todo.id !== id));
   };
 
-  const handleEdit = (editedTodo) => {};
+  const handleEdit = (editedTodo) => {
+    setTodos((prevTodos) =>
+      prevTodos.map((todo) => {
+        if (todo.id !== editedTodo.id) {
+          return todo;
+        }
+
+        return editedTodo;
+      })
+    );
+  };
 
   const handleMove = (isMovingUp) => {};
 
   return (
-    <>
+    <div>
       <h1>Todo List</h1>
       <TodoInput handleAdd={handleAdd} />
       {todos.map((todo) => (
@@ -55,7 +65,7 @@ const TodoList = () => {
           handleMove={handleMove}
         />
       ))}
-    </>
+    </div>
   );
 };
 
