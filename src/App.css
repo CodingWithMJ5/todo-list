@@ -1,0 +1,20 @@
+.todo-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 20px;
+}
+
+.todo-actions {
+  display: flex;
+  gap: 4px;
+}
+
+.todo-input-container {
+  margin-bottom: 10px;
+
+  input {
+    margin-right: 10px;
+    padding: 0.5em 0.5em;
+  }
+}
