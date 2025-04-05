@@ -57,8 +57,8 @@ const Todo = ({
       </div>
       <div className="todo-actions">
         <button onClick={() => handleDelete(todo.id)}>🗑️</button>
-        <button onClick={() => handleMove(true)}>⬆️</button>
-        <button onClick={() => handleMove(false)}>⬇️</button>
+        <button onClick={() => handleMove(todo.id, true)}>⬆️</button>
+        <button onClick={() => handleMove(todo.id, false)}>⬇️</button>
       </div>
     </div>
   );

@@ -50,10 +50,24 @@ const TodoList = () => {
     );
   };
 
-  const handleMove = (isMovingUp) => {};
+  const handleMove = (id, isMovingUp) => {
+    setTodos((prevTodos) => {
+      const index = prevTodos.findIndex((todo) => todo.id === id);
+
+      const newIndex = isMovingUp ? index - 1 : index + 1;
+      if (newIndex < 0 || newIndex >= prevTodos.length) {
+        return prevTodos;
+      }
+
+      const newTodos = [...prevTodos];
+      const [movedItem] = newTodos.splice(index, 1);
+      newTodos.splice(newIndex, 0, movedItem);
+      return newTodos;
+    });
+  };
 
   return (
-    <div>
+    <div style={{ width: '400px' }}>
       <h1>Todo List</h1>
       <TodoInput handleAdd={handleAdd} />
       {todos.map((todo) => (
