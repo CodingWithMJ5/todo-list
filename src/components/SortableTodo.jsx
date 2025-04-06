@@ -4,8 +4,14 @@ import { CSS } from '@dnd-kit/utilities';
 import Todo from './Todo';
 
 const SortableTodo = (props) => {
-  const { attributes, listeners, setNodeRef, transform, transition } =
-    useSortable({ id: props.todo.id });
+  const {
+    attributes,
+    listeners,
+    setNodeRef,
+    transform,
+    transition,
+    setActivatorNodeRef,
+  } = useSortable({ id: props.todo.id });
 
   const style = {
     transform: CSS.Transform.toString(transform),
@@ -18,7 +24,7 @@ const SortableTodo = (props) => {
       {...attributes}
       style={{ ...style, position: 'relative' }}
     >
-      <span className="drag-handle" {...listeners}>
+      <span className="drag-handle" ref={setActivatorNodeRef} {...listeners}>
         ⠿
       </span>
       <Todo {...props} />
