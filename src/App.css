@@ -20,3 +20,11 @@
     width: 80%;
   }
 }
+
+.drag-handle {
+  position: absolute;
+  left: -25px;
+  cursor: grab;
+  opacity: 0.5;
+  padding: 8px;
+}

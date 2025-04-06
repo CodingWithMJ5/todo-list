@@ -1,6 +1,22 @@
 import { useState } from 'react';
+import {
+  DndContext,
+  closestCenter,
+  KeyboardSensor,
+  PointerSensor,
+  useSensor,
+  useSensors,
+} from '@dnd-kit/core';
+import {
+  arrayMove,
+  SortableContext,
+  sortableKeyboardCoordinates,
+  verticalListSortingStrategy,
+} from '@dnd-kit/sortable';
+
 import TodoInput from './TodoInput';
 import Todo from './Todo';
+import SortableTodo from './SortableTodo';
 
 let id = 1;
 
@@ -10,6 +26,12 @@ const sampleTodos = [
 
 const TodoList = () => {
   const [todos, setTodos] = useState(sampleTodos);
+  const sensors = useSensors(
+    useSensor(PointerSensor),
+    useSensor(KeyboardSensor, {
+      coordinateGetter: sortableKeyboardCoordinates,
+    })
+  );
 
   const handleAdd = (newTask) => {
     id += 1;
@@ -50,35 +72,37 @@ const TodoList = () => {
     );
   };
 
-  const handleMove = (id, isMovingUp) => {
-    setTodos((prevTodos) => {
-      const index = prevTodos.findIndex((todo) => todo.id === id);
-
-      const newIndex = isMovingUp ? index - 1 : index + 1;
-      if (newIndex < 0 || newIndex >= prevTodos.length) {
-        return prevTodos;
-      }
-
-      const newTodos = [...prevTodos];
-      const [movedItem] = newTodos.splice(index, 1);
-      newTodos.splice(newIndex, 0, movedItem);
-      return newTodos;
-    });
+  const handleDragEnd = ({ active, over }) => {
+    if (active.id !== over.id) {
+      setTodos((todos) => {
+        const oldIndex = todos.findIndex(({ id }) => id === active.id);
+        const newIndex = todos.findIndex(({ id }) => id === over.id);
+        return arrayMove(todos, oldIndex, newIndex);
+      });
+    }
   };
 
   return (
     <div style={{ width: '400px' }}>
       <h1>Todo List</h1>
       <TodoInput handleAdd={handleAdd} />
-      {todos.map((todo) => (
-        <Todo
-          todo={todo}
-          handleComplete={handleComplete}
-          handleDelete={handleDelete}
-          handleEdit={handleEdit}
-          handleMove={handleMove}
-        />
-      ))}
+      <DndContext
+        onDragEnd={handleDragEnd}
+        sensors={sensors}
+        collisionDetection={closestCenter}
+      >
+        <SortableContext items={todos} strategy={verticalListSortingStrategy}>
+          {todos.map((todo) => (
+            <SortableTodo
+              key={todo.id}
+              todo={todo}
+              handleComplete={handleComplete}
+              handleDelete={handleDelete}
+              handleEdit={handleEdit}
+            />
+          ))}
+        </SortableContext>
+      </DndContext>
     </div>
   );
 };

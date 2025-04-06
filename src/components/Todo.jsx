@@ -1,12 +1,6 @@
 import { useState } from 'react';
 
-const Todo = ({
-  todo,
-  handleComplete,
-  handleDelete,
-  handleEdit,
-  handleMove,
-}) => {
+const Todo = ({ todo, handleComplete, handleDelete, handleEdit }) => {
   const [isEditing, setIsEditing] = useState(false);
   const [editedTask, setEditedTask] = useState(todo.task);
 
@@ -57,8 +51,6 @@ const Todo = ({
       </div>
       <div className="todo-actions">
         <button onClick={() => handleDelete(todo.id)}>🗑️</button>
-        <button onClick={() => handleMove(todo.id, true)}>⬆️</button>
-        <button onClick={() => handleMove(todo.id, false)}>⬇️</button>
       </div>
     </div>
   );
