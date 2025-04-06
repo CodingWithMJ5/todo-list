@@ -5,7 +5,11 @@ const Todo = ({ todo, handleComplete, handleDelete, handleEdit }) => {
   const [editedTask, setEditedTask] = useState(todo.task);
 
   const handleSubmit = () => {
-    handleEdit({ ...todo, task: editedTask });
+    if (editedTask.trim()) {
+      handleEdit({ ...todo, task: editedTask });
+    } else {
+      setEditedTask(todo.task);
+    }
     setIsEditing(false);
   };
 
@@ -45,7 +49,7 @@ const Todo = ({ todo, handleComplete, handleDelete, handleEdit }) => {
             }}
             onClick={() => setIsEditing(true)}
           >
-            {todo.task.trim() === '' ? 'To-do' : todo.task}
+            {todo.task}
           </label>
         )}
       </div>
